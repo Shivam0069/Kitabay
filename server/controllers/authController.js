@@ -4,7 +4,9 @@ import bcrypt from "bcrypt";
 import { sendVerificationMail } from "../utils/sendVerificationMail.js";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import { sendToken } from "../utils/sendToken.js";
-
+import { generateForgotPasswordEmailTemplate } from "../utils/emailTemplates.js";
+import { sendEmail } from "../utils/sendEmail.js";
+import crypto from "crypto";
 export const register = catchAsyncErrors(async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -147,5 +149,105 @@ export const getUserDetail = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     user,
+  });
+});
+
+export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
+  if (!req.body.email) {
+    return next(new ErrorHandler("Please provide your email.", 400));
+  }
+  const user = await User.findOne({
+    email: req.body.email,
+    accountVerified: true,
+  });
+
+  if (!user) {
+    return next(new ErrorHandler("Invalid email.", 400));
+  }
+
+  // Generate reset token
+  const resetToken = user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  // Reset password URL
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+
+  // Email message
+  const message = generateForgotPasswordEmailTemplate(resetPasswordUrl);
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Kitabay Password Recovery",
+      message,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: `Email sent to ${user.email} successfully.`,
+    });
+  } catch (error) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new ErrorHandler("Failed to send email, please try again.", 500)
+    );
+  }
+});
+
+export const resetPasswordHandler = catchAsyncErrors(async (req, res, next) => {
+  // 1. Get token from request params
+  const { token } = req.params;
+
+  // 2. Hash the token to match the one stored in DB
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
+  // 3. Find user with matching token and token not expired
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() }, // Token not expired
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler("Reset password token is invalid or has expired", 400)
+    );
+  }
+  const { password, confirmPassword } = req.body;
+  if (!password || !confirmPassword) {
+    return next(new ErrorHandler("Please provide all fields.", 400));
+  }
+
+  // Check if password and confirmPassword match
+  if (password !== confirmPassword) {
+    return next(
+      new ErrorHandler("Password & confirm password do not match.", 400)
+    );
+  }
+
+  // Check password length
+  if (password.length < 8 || password.length > 16) {
+    return next(
+      new ErrorHandler("Password must be between 8 and 16 characters.", 400)
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  user.password = hashedPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+
+  res.send({
+    success: true,
+    message:
+      "Password reset successful. You can now log in with your new password.",
   });
 });
