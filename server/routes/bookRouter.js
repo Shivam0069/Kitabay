@@ -10,12 +10,12 @@ import {
 } from "../controllers/bookController.js";
 const router = express.Router();
 
-router.post("/add", isAuthenticated, isAuthorized("Admin"), addBook);
+router.post("/add", isAuthenticated, isAuthorized("Admin", "Owner"), addBook);
 router.get("/all", isAuthenticated, getAllBooks);
 router.delete(
   "/delete/:id",
   isAuthenticated,
-  isAuthorized("Admin"),
+  isAuthorized("Admin", "Owner"),
   deleteBook
 );
 

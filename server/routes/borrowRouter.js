@@ -16,7 +16,12 @@ const router = express.Router();
 router.post("/:bookId", isAuthenticated, borrowBook);
 
 // GET /api/v1/borrow → Admin gets all borrow records
-router.get("/", isAuthenticated, isAuthorized("Admin"), getAllBorrowRecords);
+router.get(
+  "/",
+  isAuthenticated,
+  isAuthorized("Admin", "Owner"),
+  getAllBorrowRecords
+);
 
 // GET /api/v1/borrow/mine → User gets borrow records of itself
 router.get("/my-borrowed-books", isAuthenticated, getBorrowRecordsByUser);
@@ -25,7 +30,7 @@ router.get("/my-borrowed-books", isAuthenticated, getBorrowRecordsByUser);
 router.put(
   "/return/:bookId",
   isAuthenticated,
-  isAuthorized("Admin"),
+  isAuthorized("Admin", "Owner"),
   returnBorrowedBook
 );
 
