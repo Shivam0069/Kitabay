@@ -9,6 +9,8 @@ import bookRouter from "./routes/bookRouter.js";
 import borrowRouter from "./routes/borrowRouter.js";
 import userRouter from "./routes/userRouter.js";
 import expressFileUpload from "express-fileupload";
+import { notifyUsers } from "./services/notifyUsers.js";
+import { removeUnverifiedAccount } from "./services/removeUnverifiedAccount.js";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -38,6 +40,8 @@ app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/borrow", borrowRouter);
 app.use("/api/v1/user", userRouter);
 
+notifyUsers();
+removeUnverifiedAccount();
 await connectDB();
 
 app.use(errorMiddleware);
