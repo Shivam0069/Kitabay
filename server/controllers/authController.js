@@ -99,3 +99,45 @@ export const verifyOTP = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Internal server error", 500));
   }
 });
+
+export const login = catchAsyncErrors(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // 1. Validate input
+  if (!email || !password) {
+    return next(new ErrorHandler("Please enter all fields.", 400));
+  }
+
+  // 2. Find verified user
+  const user = await User.findOne({
+    email,
+    accountVerified: true,
+  }).select("+password"); // explicitly select password since schema has select: false
+
+  if (!user) {
+    return next(new ErrorHandler("Invalid email or password.", 400));
+  }
+
+  // 3. Match password
+  const isPasswordMatched = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Invalid email or password.", 400));
+  }
+
+  // 4. Send JWT token
+  sendToken(user, 200, "User login successfully", res);
+});
+
+export const logout = catchAsyncErrors(async (req, res, next) => {
+  res
+    .status(200)
+    .cookie("token", null, {
+      expires: new Date(Date.now()), // expire immediately
+      httpOnly: true, // security
+    })
+    .json({
+      success: true,
+      message: "Logged out successfully",
+    });
+});
