@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       lowercase: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -72,6 +71,13 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.methods.generateVerificationCode = function () {
+  const code = Math.floor(100000 + Math.random() * 900000); // 6-digit code
+  this.verificationCode = code;
+  this.verificationCodeExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+  return code;
+};
 
 const User = mongoose.model("User", userSchema);
 export default User;
