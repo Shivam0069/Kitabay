@@ -251,3 +251,43 @@ export const resetPasswordHandler = catchAsyncErrors(async (req, res, next) => {
       "Password reset successful. You can now log in with your new password.",
   });
 });
+
+export const updatePassword = catchAsyncErrors(async (req, res, next) => {
+  const userId = req.user._id;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+
+  if (!oldPassword || !newPassword || !confirmPassword) {
+    return next(new ErrorHandler("Please provide all fields.", 400));
+  }
+
+  if (newPassword !== confirmPassword) {
+    return next(
+      new ErrorHandler("New password and confirm password do not match.", 400)
+    );
+  }
+
+  if (newPassword.length < 8 || newPassword.length > 16) {
+    return next(
+      new ErrorHandler("Password must be between 8 and 16 characters.", 400)
+    );
+  }
+
+  const user = await User.findById(userId).select("+password");
+  if (!user) {
+    return next(new ErrorHandler("User not found.", 404));
+  }
+
+  const isOldPasswordMatched = await bcrypt.compare(oldPassword, user.password);
+  if (!isOldPasswordMatched) {
+    return next(new ErrorHandler("Old password is incorrect.", 400));
+  }
+
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedNewPassword;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Password updated successfully.",
+  });
+});
