@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const authSlice = createSlice({
   name: "auth",
@@ -249,7 +250,9 @@ export const login = (data) => async (dispatch) => {
 };
 export const logout = () => async (dispatch) => {
   try {
+    console.log("logout action called");
     dispatch(logoutRequest());
+    console.log("logout request dispatched");
 
     const { data: response } = await axios.get(
       "http://localhost:4000/api/v1/auth/logout",
@@ -258,10 +261,12 @@ export const logout = () => async (dispatch) => {
         withCredentials: true,
       }
     );
+    console.log("logout response received", response);
 
     dispatch(logoutSuccess(response.message));
     dispatch(reset());
   } catch (error) {
+    console.error("Logout error:", error);
     dispatch(
       logoutFailure(
         error.response?.data?.message || "Logout failed. Try again."
