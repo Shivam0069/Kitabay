@@ -221,6 +221,7 @@ export const resetPasswordHandler = catchAsyncErrors(async (req, res, next) => {
     );
   }
   const { password, confirmPassword } = req.body;
+
   if (!password || !confirmPassword) {
     return next(new ErrorHandler("Please provide all fields.", 400));
   }

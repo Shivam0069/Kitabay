@@ -13,18 +13,21 @@ const Header = () => {
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      const hours = now.getHours().toString().padStart(2, "0");
+
+      const hours = now.getHours() % 12 || 12; // convert to 12-hour format
       const minutes = now.getMinutes().toString().padStart(2, "0");
-      const ampm = hours >= 12 ? "PM" : "AM";
+      const ampm = now.getHours() >= 12 ? "PM" : "AM";
       const formattedTime = `${hours}:${minutes} ${ampm}`;
       setCurrentTime(formattedTime);
-      const options = { year: "numeric", month: "short", date: "numeric" };
-      setCurrentDate(now.toLocaleDateString("en-US ", options));
+
+      const options = { year: "numeric", month: "short", day: "numeric" };
+      setCurrentDate(now.toLocaleDateString("en-US", options));
     };
+
     updateDateTime();
     const intervalId = setInterval(updateDateTime, 60000);
     return () => clearInterval(intervalId);
-  });
+  }, []);
 
   return (
     <>

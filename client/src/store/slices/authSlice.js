@@ -114,8 +114,6 @@ const authSlice = createSlice({
     resetPasswordSuccess: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
-      state.user = action.payload.user;
-      state.isAuthenticated = true;
     },
     resetPasswordFailure: (state, action) => {
       state.loading = false;
@@ -326,7 +324,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
 
     const { data: response } = await axios.post(
       `http://localhost:4000/api/v1/auth/password/reset/${token}`,
-      { data },
+      data,
       {
         withCredentials: true,
         headers: {
