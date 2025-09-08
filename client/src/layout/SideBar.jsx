@@ -11,13 +11,18 @@ import { RiAdminFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, resetAuthSlice } from "../store/slices/authSlice.js";
 import { toast } from "react-toastify";
+import AddNewAdmin from "../popups/AddNewAdmin.jsx";
+import {
+  toggleAddNewAdminPopup,
+  toggleSettingPopup,
+} from "../store/slices/popUpSlice.js";
 
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
   const { loading, error, message, user, isAuthenticated } = useSelector(
     (state) => state.auth
   );
-  // const {} = useSelector((state) => state.popup);
+  const { addNewAdminPopup } = useSelector((state) => state.popup);
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -72,7 +77,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
                 <img src={usersIcon} alt="users" /> <span>Users</span>
               </button>
               <button
-                // onClick={() => dispatch(toggleAddNewAdminPopup())}
+                onClick={() => dispatch(toggleAddNewAdminPopup())}
                 className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
               >
                 <RiAdminFill className="w-6 h-6" /> <span>Add New Admin</span>
@@ -89,7 +94,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
             </button>
           )}
           <button
-            // onClick={() => dispatch(toggleSettingPopup())}
+            onClick={() => dispatch(toggleSettingPopup())}
             className="md:hidden w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
           >
             <img src={settingIcon} alt="setting" />{" "}
@@ -111,7 +116,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
           className="h-fit w-fit absolute top-0 right-4 mt-4 block md:hidden"
         />
       </aside>
-      {/* {addNewAdminPopup && <AddNewAdmin />} */}
+      {addNewAdminPopup && <AddNewAdmin />}
     </>
   );
 };
