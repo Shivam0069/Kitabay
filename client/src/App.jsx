@@ -15,9 +15,9 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/password/forgot" element={<ForgotPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/otp-verification/:email" element={<OTP />} />
-        <Route path="/password/reset/:token" element={<ResetPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Routes>
       <ToastContainer theme="dark" />
     </Router>

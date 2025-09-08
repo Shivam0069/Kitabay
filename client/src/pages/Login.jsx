@@ -107,7 +107,7 @@ const Login = () => {
               </div>
 
               <Link
-                to={"/password/forgot"}
+                to={"/forgot-password"}
                 className="font-semibold text-black mb-12"
               >
                 Forgot Password
