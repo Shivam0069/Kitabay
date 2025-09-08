@@ -23,6 +23,7 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (message) {
       // toast.success(message);
+      dispatch(resetAuthSlice());
       navigate("/login");
     }
     if (error) {
@@ -59,6 +60,7 @@ const ForgotPassword = () => {
               <div className="mb-4">
                 <input
                   type="email"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
@@ -70,7 +72,7 @@ const ForgotPassword = () => {
                 className="border-2 mt-5 border-black w-full font-semibold bg-black text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
                 disabled={loading}
               >
-                VERIFY
+                RESET PASSWORD
               </button>
             </form>
           </div>
@@ -84,15 +86,11 @@ const ForgotPassword = () => {
                 className="mb-12 h-44 w-auto"
               />
             </div>
-            <p className="text-gray-300 mb-12">
-              Don't have Account? Sign up now.{" "}
-            </p>
-            <Link
-              className="border-2 rounded-lg font-semibold border-white py-2 px-8 hover:bg-white hover:text-black transition"
-              to={"/register"}
-            >
-              SIGN UP
-            </Link>
+            <div>
+              <h3 className="text-gray-300  max-w-[320px] mx-auto text-xl font-medium leading-10">
+                "Your premier digital library for borrowing and reading books."
+              </h3>
+            </div>
           </div>
         </div>
       </div>
