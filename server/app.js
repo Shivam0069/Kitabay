@@ -18,7 +18,7 @@ export const app = express();
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL],
+    origin: ["https://kitabay-bookworm.vercel.app/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
