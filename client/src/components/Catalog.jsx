@@ -103,9 +103,7 @@ const Catalog = () => {
                   <td className="px-4 py-2 text-left">{idx + 1}</td>
                   <td className="px-4 py-2 text-left">{book?.user.name}</td>
                   <td className="px-4 py-2 text-left">{book?.user.email}</td>
-                  <td className="px-4 py-2 text-left">
-                    {formatDate(book?.price)}
-                  </td>
+                  <td className="px-4 py-2 text-left">{book?.price}</td>
                   <td className="px-4 py-2 text-left">
                     {formatDate(book?.dueDate)}
                   </td>
@@ -140,7 +138,9 @@ const Catalog = () => {
           </table>
         </div>
       </main>
-      {returnBookPopup && <ReturnBookPopup />}
+      {returnBookPopup && (
+        <ReturnBookPopup bookId={borrowedBookId} email={email} />
+      )}
     </>
   );
 };
