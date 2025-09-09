@@ -96,7 +96,7 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
   dispatch(fetchUserBorrowedBooksRequest());
   try {
     const { data: res } = await axios.get(
-      "http://localhost:4000/api/v1/borrow/my-borrowed-books",
+      `${import.meta.env.VITE_API_URL}/api/v1/borrow/my-borrowed-books`,
       {
         withCredentials: true,
       }
@@ -114,7 +114,7 @@ export const fetchAllBorrowedBooks = () => async (dispatch) => {
   dispatch(fetchAllBorrowedBooksRequest());
   try {
     const { data: res } = await axios.get(
-      "http://localhost:4000/api/v1/borrow/",
+      `${import.meta.env.VITE_API_URL}/api/v1/borrow/`,
       {
         withCredentials: true,
       }
@@ -132,7 +132,7 @@ export const borrowBook = (id, email) => async (dispatch) => {
   dispatch(borrowBookRequest());
   try {
     const { data: res } = await axios.post(
-      `http://localhost:4000/api/v1/borrow/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/v1/borrow/${id}`,
       { email },
       {
         withCredentials: true,
@@ -155,7 +155,7 @@ export const returnBook = (id, email) => async (dispatch) => {
   dispatch(returnBookRequest());
   try {
     const { data: res } = await axios.put(
-      `http://localhost:4000/api/v1/borrow/return/${id}`,
+      `${import.meta.env.VITE_API_URL}/api/v1/borrow/return/${id}`,
       { email },
       {
         withCredentials: true,

@@ -81,7 +81,7 @@ export const fetchAllBooks = () => async (dispatch) => {
   dispatch(fetchBooksRequest());
   try {
     const { data: response } = await axios.get(
-      "http://localhost:4000/api/v1/book/all",
+      `${import.meta.env.VITE_API_URL}/api/v1/book/all`,
       {
         withCredentials: true,
       }
@@ -100,7 +100,7 @@ export const addNewBook = (data) => async (dispatch) => {
   dispatch(addBookRequest());
   try {
     const { data: res } = await axios.post(
-      "http://localhost:4000/api/v1/book/add",
+      `${import.meta.env.VITE_API_URL}/api/v1/book/add`,
       data,
       {
         withCredentials: true,
@@ -124,7 +124,7 @@ export const deleteBook = (data) => async (dispatch) => {
   dispatch(deleteBookRequest());
   try {
     const { data: response } = await axios.delete(
-      `http://localhost:4000/api/v1/book/delete/${data}`,
+      `${import.meta.env.VITE_API_URL}/api/v1/book/delete/${data}`,
       {
         withCredentials: true,
       }

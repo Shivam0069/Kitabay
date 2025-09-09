@@ -182,7 +182,7 @@ export const register = (data) => async (dispatch) => {
     dispatch(registerRequest());
 
     const { data: response } = await axios.post(
-      "http://localhost:4000/api/v1/auth/register",
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/register`,
       data,
       {
         withCredentials: true,
@@ -206,7 +206,7 @@ export const otpVerification = (email, otp) => async (dispatch) => {
     dispatch(otpVerificationRequest());
 
     const { data: response } = await axios.post(
-      "http://localhost:4000/api/v1/auth/verify-otp",
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/verify-otp`,
       { email, otp },
       {
         withCredentials: true,
@@ -230,7 +230,7 @@ export const login = (data) => async (dispatch) => {
     dispatch(loginRequest());
 
     const { data: response } = await axios.post(
-      "http://localhost:4000/api/v1/auth/login",
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/login`,
       data,
       {
         withCredentials: true,
@@ -254,7 +254,7 @@ export const logout = () => async (dispatch) => {
     console.log("logout request dispatched");
 
     const { data: response } = await axios.get(
-      "http://localhost:4000/api/v1/auth/logout",
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/logout`,
 
       {
         withCredentials: true,
@@ -278,7 +278,7 @@ export const getUser = () => async (dispatch) => {
     dispatch(getUserRequest());
 
     const { data: response } = await axios.get(
-      "http://localhost:4000/api/v1/auth/profile",
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/profile`,
 
       {
         withCredentials: true,
@@ -299,7 +299,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     dispatch(forgotPasswordRequest());
 
     const { data: response } = await axios.post(
-      "http://localhost:4000/api/v1/auth/password/forgot",
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/password/forgot`,
       { email },
       {
         withCredentials: true,
@@ -324,7 +324,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
     dispatch(resetPasswordRequest());
 
     const { data: response } = await axios.post(
-      `http://localhost:4000/api/v1/auth/password/reset/${token}`,
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/password/reset/${token}`,
       data,
       {
         withCredentials: true,
@@ -349,7 +349,7 @@ export const updatePassword = (data) => async (dispatch) => {
     dispatch(updatePasswordRequest());
 
     const { data: response } = await axios.put(
-      "http://localhost:4000/api/v1/auth/password/update",
+      `${import.meta.env.VITE_API_URL}/api/v1/auth/password/update`,
       data,
       {
         withCredentials: true,

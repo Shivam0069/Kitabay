@@ -45,9 +45,12 @@ const {
 export const fetchAllUsers = () => async (dispatch) => {
   dispatch(fetchAllUsersStart());
   try {
-    const response = await axios.get("http://localhost:4000/api/v1/user/all", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/v1/user/all`,
+      {
+        withCredentials: true,
+      }
+    );
     dispatch(fetchAllUsersSuccess(response.data.users));
   } catch (error) {
     dispatch(fetchAllUsersFailure());
@@ -60,7 +63,7 @@ export const addNewAdmin = (data) => async (dispatch) => {
   dispatch(addNewAdminStart());
   try {
     const { data: response } = await axios.post(
-      "http://localhost:4000/api/v1/user/add/new-admin",
+      `${import.meta.env.VITE_API_URL}/api/v1/user/add/new-admin`,
       data,
       {
         withCredentials: true,
