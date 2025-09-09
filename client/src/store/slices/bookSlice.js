@@ -60,7 +60,6 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.message = null;
-      state.books = [];
     },
   },
 });
@@ -75,6 +74,7 @@ const {
   deleteBookFailure,
   deleteBookRequest,
   deleteBookSuccess,
+  resetBookSlice,
 } = bookSlice.actions;
 
 export const fetchAllBooks = () => async (dispatch) => {
@@ -136,6 +136,10 @@ export const deleteBook = (data) => async (dispatch) => {
       )
     );
   }
+};
+
+export const resetBookSliceData = () => (dispatch) => {
+  dispatch(resetBookSlice());
 };
 
 export default bookSlice.reducer;
