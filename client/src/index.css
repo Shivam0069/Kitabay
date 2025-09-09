@@ -9,4 +9,14 @@
   font-style: normal;
   overflow-x: hidden;
   box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+* {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
 }
