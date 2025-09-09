@@ -79,6 +79,10 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
               >
                 <img src={usersIcon} alt="users" /> <span>Users</span>
               </button>
+            </>
+          )}
+          {isAuthenticated && user?.role === "Owner" && (
+            <>
               <button
                 onClick={() => dispatch(toggleAddNewAdminPopup())}
                 className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"

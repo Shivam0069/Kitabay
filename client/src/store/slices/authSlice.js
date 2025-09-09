@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toggleSettingPopup } from "./popUpSlice";
 
 const authSlice = createSlice({
   name: "auth",
@@ -359,6 +360,7 @@ export const updatePassword = (data) => async (dispatch) => {
     );
 
     dispatch(updatePasswordSuccess(response.message));
+    dispatch(toggleSettingPopup());
   } catch (error) {
     dispatch(
       updatePasswordFailure(

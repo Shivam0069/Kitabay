@@ -33,7 +33,11 @@ const Header = () => {
     <>
       <header className="absolute top-0 bg-white w-full py-4 px-6 left-0 shadow-md flex items-center justify-between ">
         <div className="flex items-center gap-2">
-          <img src={userIcon} alt="userIcon" className="w-8 h-8" />
+          <img
+            src={user?.avatar?.url || userIcon}
+            alt="userIcon"
+            className="w-8 h-8 rounded-full"
+          />
           <div className="flex flex-col">
             <span className="text-sm font-medium sm:text-lg lg:text-xl sm:font-semibold">
               {user?.name}
@@ -52,8 +56,8 @@ const Header = () => {
           <img
             src={settingIcon}
             alt="settingIcon"
-            className="h-8 w-8"
-            onClick={() => toggleSettingPopup()}
+            className="h-8 w-8 cursor-pointer hover:rotate-45 transition duration-500"
+            onClick={() => dispatch(toggleSettingPopup())}
           />
         </div>
       </header>

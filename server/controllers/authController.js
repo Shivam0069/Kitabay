@@ -263,7 +263,10 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
 
   if (newPassword !== confirmPassword) {
     return next(
-      new ErrorHandler("New password and confirm password do not match.", 400)
+      new ErrorHandler(
+        "New password and Confirm New password do not match.",
+        400
+      )
     );
   }
 
@@ -280,7 +283,7 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
 
   const isOldPasswordMatched = await bcrypt.compare(oldPassword, user.password);
   if (!isOldPasswordMatched) {
-    return next(new ErrorHandler("Old password is incorrect.", 400));
+    return next(new ErrorHandler("Current password is incorrect.", 400));
   }
 
   const hashedNewPassword = await bcrypt.hash(newPassword, 10);
