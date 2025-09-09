@@ -16,6 +16,7 @@ import {
   ArcElement,
 } from "chart.js";
 import logo from "../assets/black-logo.png";
+import Header from "../layout/Header";
 
 ChartJS.register(
   CategoryScale,
@@ -30,7 +31,13 @@ ChartJS.register(
 );
 
 const AdminDashboard = () => {
-  return <></>;
+  return (
+    <>
+      <main className="relative flex-1 p-6 pt-28">
+        <Header />
+      </main>
+    </>
+  );
 };
 
 export default AdminDashboard;

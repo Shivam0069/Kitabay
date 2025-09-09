@@ -70,7 +70,7 @@ const BookManagement = () => {
   const handleSearch = (e) => {
     setKeyword(e.target.value.toLowerCase());
   };
-  const searchedBooks = books.filter((book) =>
+  const searchedBooks = books?.filter((book) =>
     book.title.toLowerCase().includes(keyword)
   );
 
@@ -108,16 +108,16 @@ const BookManagement = () => {
           <table className="min-w-full border-collapse">
             <thead>
               <tr className="bg-gray-200">
-                <th className="px-4 py-2 text-center">ID</th>
-                <th className="px-4 py-2 text-center">Name</th>
-                <th className="px-4 py-2 text-center">Author</th>
+                <th className="px-4 py-2 text-left">ID</th>
+                <th className="px-4 py-2 text-left">Name</th>
+                <th className="px-4 py-2 text-left">Author</th>
                 {isAuthenticated && user?.role !== "User" && (
-                  <th className="px-4 py-2 text-center">Quantity</th>
+                  <th className="px-4 py-2 text-left">Quantity</th>
                 )}
-                <th className="px-4 py-2 text-center">Price</th>
-                <th className="px-4 py-2 text-center">Availability</th>
+                <th className="px-4 py-2 text-left">Price</th>
+                <th className="px-4 py-2 text-left">Availability</th>
                 {isAuthenticated && user?.role !== "User" && (
-                  <th className="px-4 py-2 text-center">Record Book</th>
+                  <th className="px-4 py-2 text-left">Record Book</th>
                 )}
               </tr>
             </thead>
@@ -127,20 +127,18 @@ const BookManagement = () => {
                   key={idx}
                   className={(idx + 1) % 2 === 0 ? "bg-gray-50" : ""}
                 >
-                  <td className="px-4 py-2 text-center">{idx + 1}</td>
-                  <td className="px-4 py-2 text-center">{book.title}</td>
-                  <td className="px-4 py-2 text-center">{book.author}</td>
+                  <td className="px-4 py-2 text-left">{idx + 1}</td>
+                  <td className="px-4 py-2 text-left">{book.title}</td>
+                  <td className="px-4 py-2 text-left">{book.author}</td>
                   {isAuthenticated && user?.role !== "User" && (
-                    <td className="px-4 py-2 text-center">{book.quantity}</td>
+                    <td className="px-4 py-2 text-left">{book.quantity}</td>
                   )}
-                  <td className="px-4 py-2 text-center">
-                    &#8377; {book.price}
-                  </td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-left">&#8377; {book.price}</td>
+                  <td className="px-4 py-2 text-left">
                     {book.availability ? "Available" : "Out of stock"}
                   </td>
                   {isAuthenticated && user?.role !== "User" && (
-                    <td className="px-4 py-2 flex space-x-2 my-3 justify-center">
+                    <td className="px-4 py-2 flex space-x-2 my-3 justify-left">
                       <BookA
                         className="cursor-pointer"
                         onClick={() => openReadPopup(book._id)}
