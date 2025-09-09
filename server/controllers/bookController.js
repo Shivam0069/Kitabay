@@ -35,6 +35,7 @@ export const deleteBook = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Book deleted successfully",
+    bookId: id,
   });
 });
 export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
