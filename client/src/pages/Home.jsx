@@ -51,11 +51,11 @@ const Home = () => {
         >
           <AnimatePresence mode="wait">
             <motion.div
-              key={selectedComponent} // important for re-animation on change
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.3 }}
+              key={selectedComponent}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
               className="h-full"
             >
               {(() => {
