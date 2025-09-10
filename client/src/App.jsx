@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,7 +20,67 @@ import {
   fetchAllBorrowedBooks,
   fetchUserBorrowedBooks,
 } from "./store/slices/borrowSlice";
+import { AnimatePresence, motion } from "framer-motion";
+import PageWrapper from "./components/PageWrapper";
 
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <PageWrapper>
+              <Home />{" "}
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PageWrapper>
+              <Login />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PageWrapper>
+              <Register />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <PageWrapper>
+              <ForgotPassword />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/otp-verification/:email"
+          element={
+            <PageWrapper>
+              <OTP />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/reset-password/:token"
+          element={
+            <PageWrapper>
+              <ResetPassword />
+            </PageWrapper>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 const App = () => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -35,14 +100,7 @@ const App = () => {
   }, [isAuthenticated]);
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/otp-verification/:email" element={<OTP />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-      </Routes>
+      <AnimatedRoutes />
       <ToastContainer theme="dark" />
     </Router>
   );
