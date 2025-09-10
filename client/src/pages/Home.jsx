@@ -10,7 +10,7 @@ const Catalog = lazy(() => import("../components/Catalog"));
 const MyBorrowedBooks = lazy(() => import("../components/MyBorrowedBooks"));
 const Users = lazy(() => import("../components/Users"));
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader } from "lucide-react";
+import Loader from "../components/Loader";
 
 const Home = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -40,8 +40,15 @@ const Home = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1 ">
-        <Suspense fallback={<Loader />}>
+      <div className="flex-1  ">
+        <Suspense
+          fallback={
+            <div className="w-full h-full flex items-center justify-center animate-pulse font-bold text-xl">
+              <Loader />
+              Loading...
+            </div>
+          }
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedComponent} // important for re-animation on change
