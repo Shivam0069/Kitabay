@@ -22,6 +22,7 @@ import {
 } from "./store/slices/borrowSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import PageWrapper from "./components/PageWrapper";
+import Loader from "./components/Loader";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -82,7 +83,7 @@ const AnimatedRoutes = () => {
   );
 };
 const App = () => {
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { loading, user, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUser());
@@ -100,6 +101,7 @@ const App = () => {
   }, [isAuthenticated]);
   return (
     <Router>
+      {loading && <Loader />}
       <AnimatedRoutes />
       <ToastContainer theme="dark" />
     </Router>

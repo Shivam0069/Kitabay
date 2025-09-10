@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import SideBar from "../layout/SideBar";
-import AdminDashboard from "../components/AdminDashboard";
-import UserDashboard from "../components/UserDashboard";
-import BookManagement from "../components/BookManagement";
-import Catalog from "../components/Catalog";
-import MyBorrowedBooks from "../components/MyBorrowedBooks";
-
-import Users from "../components/Users";
+const AdminDashboard = lazy(() => import("../components/AdminDashboard"));
+const UserDashboard = lazy(() => import("../components/UserDashboard"));
+const BookManagement = lazy(() => import("../components/BookManagement"));
+const Catalog = lazy(() => import("../components/Catalog"));
+const MyBorrowedBooks = lazy(() => import("../components/MyBorrowedBooks"));
+const Users = lazy(() => import("../components/Users"));
+import { AnimatePresence, motion } from "framer-motion";
+import { Loader } from "lucide-react";
 
 const Home = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -39,39 +40,62 @@ const Home = () => {
       />
 
       {/* Main Content */}
-      {(() => {
-        switch (selectedComponent) {
-          case "Dashboard":
-            return user?.role === "User" ? (
-              <UserDashboard setSelectedComponent={setSelectedComponent} />
-            ) : (
-              <AdminDashboard />
-            );
+      <div className="flex-1 p-4">
+        <Suspense
+          fallback={
+            <div className="w-full h-full bg-white">
+              <Loader />
+            </div>
+          }
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedComponent} // important for re-animation on change
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.3 }}
+              className="h-full"
+            >
+              {(() => {
+                switch (selectedComponent) {
+                  case "Dashboard":
+                    return user?.role === "User" ? (
+                      <UserDashboard
+                        setSelectedComponent={setSelectedComponent}
+                      />
+                    ) : (
+                      <AdminDashboard />
+                    );
 
-          case "Books":
-            return <BookManagement />;
+                  case "Books":
+                    return <BookManagement />;
 
-          case "Catalog":
-            if (user?.role === "Admin" || user?.role === "Owner")
-              return <Catalog />;
-            return null;
+                  case "Catalog":
+                    if (user?.role === "Admin" || user?.role === "Owner")
+                      return <Catalog />;
+                    return null;
 
-          case "Users":
-            if (user?.role === "Admin" || user?.role === "Owner")
-              return <Users />;
-            return null;
+                  case "Users":
+                    if (user?.role === "Admin" || user?.role === "Owner")
+                      return <Users />;
+                    return null;
 
-          case "My Borrowed Books":
-            return <MyBorrowedBooks />;
+                  case "My Borrowed Books":
+                    return <MyBorrowedBooks />;
 
-          default:
-            return user?.role === "User" ? (
-              <UserDashboard />
-            ) : (
-              <AdminDashboard />
-            );
-        }
-      })()}
+                  default:
+                    return user?.role === "User" ? (
+                      <UserDashboard />
+                    ) : (
+                      <AdminDashboard />
+                    );
+                }
+              })()}
+            </motion.div>
+          </AnimatePresence>
+        </Suspense>
+      </div>
     </div>
   );
 };
