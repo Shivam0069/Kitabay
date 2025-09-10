@@ -46,7 +46,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
       <aside
         className={`${
           isSideBarOpen ? "left-0" : "-left-full"
-        } z-10 transition-all duration-700 md:relative md:left-0 flex w-64 bg-black text-white flex-col h-full`}
+        } z-10 transition-all duration-700 md:relative md:left-0 flex w-full md:w-64 bg-black text-white flex-col h-full`}
         style={{ position: "fixed" }}
       >
         <div className="px-6 py-4 my-8">
@@ -54,13 +54,19 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
         </div>
         <nav className="flex-1 px-6 space-y-2">
           <button
-            onClick={() => setSelectedComponent("Dashboard")}
+            onClick={() => {
+              setSelectedComponent("Dashboard");
+              setIsSideBarOpen(false);
+            }}
             className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
           >
             <img src={dashboardIcon} alt="dashboard" /> <span>Dashboard</span>
           </button>
           <button
-            onClick={() => setSelectedComponent("Books")}
+            onClick={() => {
+              setSelectedComponent("Books");
+              setIsSideBarOpen(false);
+            }}
             className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
           >
             <img src={bookIcon} alt="books" /> <span>Books</span>
@@ -68,13 +74,19 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
           {isAuthenticated && user?.role !== "User" && (
             <>
               <button
-                onClick={() => setSelectedComponent("Catalog")}
+                onClick={() => {
+                  setSelectedComponent("Catalog");
+                  setIsSideBarOpen(false);
+                }}
                 className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
               >
                 <img src={catalogIcon} alt="catalog" /> <span>Catalog</span>
               </button>
               <button
-                onClick={() => setSelectedComponent("Users")}
+                onClick={() => {
+                  setSelectedComponent("Users");
+                  setIsSideBarOpen(false);
+                }}
                 className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
               >
                 <img src={usersIcon} alt="users" /> <span>Users</span>
@@ -93,7 +105,10 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
           )}
           {isAuthenticated && user?.role === "User" && (
             <button
-              onClick={() => setSelectedComponent("My Borrowed Books")}
+              onClick={() => {
+                setSelectedComponent("My Borrowed Books");
+                setIsSideBarOpen(false);
+              }}
               className="w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
             >
               <img src={catalogIcon} alt="my-borrowed-books" />{" "}
@@ -101,7 +116,10 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
             </button>
           )}
           <button
-            onClick={() => dispatch(toggleSettingPopup())}
+            onClick={() => {
+              dispatch(toggleSettingPopup());
+              setIsSideBarOpen(false);
+            }}
             className="md:hidden w-full py-2 font-medium bg-transparent rounded-md hover:cursor-pointer flex items-center space-x-2"
           >
             <img src={settingIcon} alt="setting" />{" "}
