@@ -40,14 +40,8 @@ const Home = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1 p-4">
-        <Suspense
-          fallback={
-            <div className="w-full h-full bg-white">
-              <Loader />
-            </div>
-          }
-        >
+      <div className="flex-1 ">
+        <Suspense fallback={<Loader />}>
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedComponent} // important for re-animation on change
